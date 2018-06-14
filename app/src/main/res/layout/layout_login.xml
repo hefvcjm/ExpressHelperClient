@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="50dp"
-    android:orientation="vertical">
+    android:background="@drawable/ic_background"
+    android:orientation="vertical"
+    android:paddingTop="50dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -24,18 +25,28 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:background="@drawable/radius_rect_shape"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="15dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_phone" />
 
             <EditText
                 android:id="@+id/et_phone"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
                 android:background="@null"
-                android:drawableBottom="@drawable/line"
                 android:hint="手机号"
                 android:inputType="number"
                 android:maxLength="11" />
@@ -47,21 +58,29 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
+            android:background="@drawable/radius_rect_shape"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="15dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_keypad" />
 
             <EditText
                 android:id="@+id/et_vcode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:background="@null"
-                android:drawableBottom="@drawable/line"
                 android:hint="验证码"
                 android:inputType="number" />
 
@@ -69,14 +88,15 @@
                 android:id="@+id/bn_send_vcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_login"
+                android:background="@drawable/selector_vcode"
                 android:minHeight="0dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
-                android:textSize="14sp"
-                android:text="获取验证码" />
+                android:text="获取验证码"
+                android:textColor="#F7F7F7"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -85,14 +105,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:minHeight="0dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/selector_login"
+            android:minHeight="0dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
             android:text="登录" />
 
     </LinearLayout>

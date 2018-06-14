@@ -5,7 +5,7 @@
         android:state_pressed="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/loginPressed"/>
-            <corners android:radius="5dp"/>
+            <corners android:radius="20dp"/>
         </shape>
     </item>
 
@@ -13,14 +13,14 @@
         android:state_selected="true">
         <shape android:shape="rectangle">
             <solid android:color="@color/loginPressed"/>
-            <corners android:radius="5dp"/>
+            <corners android:radius="20dp"/>
         </shape>
     </item>
 
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/loginDefault"/>
-            <corners android:radius="5dp"/>
+            <corners android:radius="20dp"/>
         </shape>
     </item>
 </selector>

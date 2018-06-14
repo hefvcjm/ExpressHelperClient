@@ -26,4 +26,6 @@
     <color name="btn_color_pressed">#f6ffb300</color>
     <color name="btn_color_green">#ff35bc26</color>
     <color name="btn_color_unable">#ffc0c0c0</color>
+    <color name="btn_color_vcode_pressed">#ff8b8b7a</color>
+    <color name="et_color_default">#ffc0c0c0</color>
 </resources>
