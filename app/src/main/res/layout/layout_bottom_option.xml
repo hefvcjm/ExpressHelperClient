@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!-- 物流列表，暂定是首页 -->
+    <Button
+        android:id="@+id/bn_express_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="首页" />
+
+    <!-- 动态，推送一些消息 -->
+    <Button
+        android:id="@+id/bn_found"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="发现" />
+
+    <!-- 用户自我管理也设置 -->
+    <Button
+        android:id="@+id/bn_myself"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="我的" />
+
+</LinearLayout>

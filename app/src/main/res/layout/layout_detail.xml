@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetailStyle.Left"
+                android:text="领取状态：" />
+
+            <TextView
+                android:id="@+id/tv_detail_state"
+                style="@style/DetailStyle.Right"
+                android:text="待领取" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_pickup_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/DetailStyle.Left"
+                android:text="取货时间：" />
+
+            <TextView
+                android:id="@+id/tv_detail_pickuptime"
+                style="@style/DetailStyle.Right"
+                android:text="2018-04-17 17:08:32" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetailStyle.Left"
+                android:text="快递公司：" />
+
+            <TextView
+                android:id="@+id/tv_detail_company"
+                style="@style/DetailStyle.Right"
+                android:text="顺丰快递" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetailStyle.Left"
+                android:text="取货地址：" />
+
+            <TextView
+                android:id="@+id/tv_detail_location"
+                style="@style/DetailStyle.Right"
+                android:text="交大西十五3号快递柜" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetailStyle.Left"
+                android:text="截止时间：" />
+
+            <TextView
+                android:id="@+id/tv_detail_deadline"
+                style="@style/DetailStyle.Right"
+                android:text="2018-04-18 00:00:00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DetailStyle.Left"
+                android:text="取货码：" />
+
+            <TextView
+                android:id="@+id/tv_detail_code"
+                style="@style/DetailStyle.Right"
+                android:text="123456" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bn_delay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/selector_login"
+            android:text="延迟一天" />
+
+        <Button
+            android:id="@+id/bn_refuse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/selector_login"
+            android:text="拒收快递" />
+
+    </LinearLayout>
+
+</LinearLayout>
