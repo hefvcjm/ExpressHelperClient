@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">物流助手</string>
+
+    <!-- 物流领取状态 -->
+    <string name="str_state_receiving">待取货</string>
+    <string name="str_state_received">已领取</string>
+    <string name="str_state_refused">已拒收</string>
+    <string name="str_state_overdue">已过期</string>
+
+    <string name="str_warning">拒收后快递将很快被退回，再次确认拒收吗？</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_ok">确定</string>
+    <string name="str_server_url">http://192.168.2.224:8443/</string>
 </resources>

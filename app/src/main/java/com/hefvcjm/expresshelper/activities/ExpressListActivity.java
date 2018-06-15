@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -31,10 +33,15 @@ public class ExpressListActivity extends Activity {
 
     private static final int WHAT_DATASETCHANED = 0;
 
+    public static final int REQUESTCODE_STATE_CHAGED = 1;
+
     private List<ExpressInfos> expressList = new ArrayList<ExpressInfos>();
     private String url;
     private String phone;
     ExpressListAdapter adapter;
+
+    ListView lv_express_list;
+
 
     private Handler handler = new Handler() {
 
@@ -53,14 +60,15 @@ public class ExpressListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_express_list);
 
-        url = "http://192.168.43.253:8443/";
+        url = getResources().getString(R.string.str_server_url);
         Intent intent = getIntent();
         phone = intent.getStringExtra("phone");
         UserInfos.getInstance().setPhone(phone);
         adapter = new ExpressListAdapter(ExpressListActivity.this, R.layout.item_list_express, expressList);
-        ListView lv_express_list = findViewById(R.id.lv_express_list);
+        lv_express_list = findViewById(R.id.lv_express_list);
         lv_express_list.setAdapter(adapter);
         synchronize_express(url, phone);
 
@@ -71,10 +79,53 @@ public class ExpressListActivity extends Activity {
                 ExpressInfos expressInfos = expressList.get(position);
                 Intent intent = new Intent(ExpressListActivity.this, ExpressDetailActivity.class);
                 intent.putExtra("express_detail", expressInfos.toString());
-                startActivity(intent);
+                intent.putExtra("position", position);
+                Log.d("listview", expressInfos.toString());
+                startActivityForResult(intent, REQUESTCODE_STATE_CHAGED);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUESTCODE_STATE_CHAGED:
+                try {
+                    JSONObject json = new JSONObject(data.getStringExtra("result"));
+                    if ((boolean) json.get("ischanged")) {
+                        int position = (int) json.get("position");
+                        if (position != -1) {
+                            String state = json.getString("state");
+                            int visibleFirstPosition = lv_express_list.getFirstVisiblePosition();
+                            int visibleLastPosition = lv_express_list.getLastVisiblePosition();
+                            if (position >= visibleFirstPosition && position <= visibleLastPosition) {
+                                View view = lv_express_list.getChildAt(position - visibleFirstPosition);
+                                ExpressListAdapter.ViewHolder holder = (ExpressListAdapter.ViewHolder)view.getTag();
+                                holder.tv_express_state.setText(state);
+                                if (state.equals(getResources().getString(R.string.str_state_receiving))){
+                                    holder.tv_express_state.setTextColor(getResources().getColor(R.color.state_receiving));
+                                    holder.iv_state.setImageDrawable(getResources().getDrawable(R.drawable.receiving));
+                                }else if (state.equals(getResources().getString(R.string.str_state_received))){
+                                    holder.tv_express_state.setTextColor(getResources().getColor(R.color.state_received));
+                                    holder.iv_state.setImageDrawable(getResources().getDrawable(R.drawable.received));
+                                }else if (state.equals(getResources().getString(R.string.str_state_refused))){
+                                    holder.tv_express_state.setTextColor(getResources().getColor(R.color.state_refused));
+                                    holder.iv_state.setImageDrawable(getResources().getDrawable(R.drawable.refused));
+                                }
+                                ExpressInfos expressInfos = expressList.get(position);
+                                expressInfos.setState(state);
+                                expressList.set(position, expressInfos);
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void synchronize_express(final String url, String phone) {

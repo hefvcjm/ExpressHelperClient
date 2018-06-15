@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_login);
 
-        server_url = "http://192.168.43.253:8443/";
+        server_url = getResources().getString(R.string.str_server_url);;
         Button bn_login = findViewById(R.id.bn_login);
         Button bn_send_vcode = findViewById(R.id.bn_send_vcode);
         final EditText et_phone = findViewById(R.id.et_phone);

@@ -68,7 +68,7 @@ public class WelcomeActivity extends Activity {
 //                    e.printStackTrace();
 //                }
                 if (token != null) {
-                    server_url = "http://192.168.43.253:8443/";
+                    server_url = getResources().getString(R.string.str_server_url);;
                     try {
                         new MyHttpClient(server_url
                                 , new JSONObject().put("type", "token_login").put("Content-Type", "application/json;charset=utf-8")

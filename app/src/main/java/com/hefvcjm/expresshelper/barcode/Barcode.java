@@ -35,8 +35,12 @@ public class Barcode {
             if (str == null) {
                 return null;
             }
-            matrix = new MultiFormatWriter().encode(str, barcodeFormat, width, height, null);
-            return bitMatrix2Bitmap(matrix);
+            try {
+                matrix = new MultiFormatWriter().encode(str, barcodeFormat, width, height, null);
+                return bitMatrix2Bitmap(matrix);
+            }catch (IllegalArgumentException e){
+                e.printStackTrace();
+            }
         } catch (WriterException e) {
             e.printStackTrace();
         }

@@ -28,4 +28,11 @@
     <color name="btn_color_unable">#ffc0c0c0</color>
     <color name="btn_color_vcode_pressed">#ff8b8b7a</color>
     <color name="et_color_default">#ffc0c0c0</color>
+
+    <!-- 取货状态提示字体颜色 -->
+    <color name="state_receiving">#ff2751ba</color>
+    <color name="state_received">#ff38b826</color>
+    <color name="state_refused">#ffad1726</color>
+
+    <color name="btn_color_disble">#ffa9a9a9</color>
 </resources>

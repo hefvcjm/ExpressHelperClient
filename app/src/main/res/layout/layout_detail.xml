@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/list_view_title" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -19,6 +21,12 @@
             <TextView
                 style="@style/DetailStyle.Left"
                 android:text="领取状态：" />
+
+            <ImageView
+                android:id="@+id/iv_detail_state"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/receiving" />
 
             <TextView
                 android:id="@+id/tv_detail_state"
@@ -52,6 +60,12 @@
                 style="@style/DetailStyle.Left"
                 android:text="快递公司：" />
 
+            <ImageView
+                android:id="@+id/iv_detail_company"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/logo_sf" />
+
             <TextView
                 android:id="@+id/tv_detail_company"
                 style="@style/DetailStyle.Right"
@@ -66,6 +80,12 @@
             <TextView
                 style="@style/DetailStyle.Left"
                 android:text="取货地址：" />
+
+            <ImageView
+                android:id="@+id/iv_detail_location"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_location" />
 
             <TextView
                 android:id="@+id/tv_detail_location"
@@ -82,6 +102,12 @@
                 style="@style/DetailStyle.Left"
                 android:text="截止时间：" />
 
+            <ImageView
+                android:id="@+id/iv_detail_time"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_time" />
+
             <TextView
                 android:id="@+id/tv_detail_deadline"
                 style="@style/DetailStyle.Right"
@@ -96,6 +122,12 @@
             <TextView
                 style="@style/DetailStyle.Left"
                 android:text="取货码：" />
+
+            <ImageView
+                android:id="@+id/iv_detail_code"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_code" />
 
             <TextView
                 android:id="@+id/tv_detail_code"
@@ -126,19 +158,21 @@
             android:id="@+id/bn_delay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginRight="10dp"
+            android:layout_weight="1"
             android:background="@drawable/selector_login"
-            android:text="延迟一天" />
+            android:text="延迟一天"
+            android:textColor="@color/colorBlack" />
 
         <Button
             android:id="@+id/bn_refuse"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:background="@drawable/selector_login"
-            android:text="拒收快递" />
+            android:text="拒收快递"
+            android:textColor="@color/colorBlack" />
 
     </LinearLayout>
 
