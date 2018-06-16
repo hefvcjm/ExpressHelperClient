@@ -35,23 +35,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_pickup_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                style="@style/DetailStyle.Left"
-                android:text="取货时间：" />
-
-            <TextView
-                android:id="@+id/tv_detail_pickuptime"
-                style="@style/DetailStyle.Right"
-                android:text="2018-04-17 17:08:32" />
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -106,10 +89,33 @@
                 android:id="@+id/iv_detail_time"
                 android:layout_width="20dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_time" />
+                android:src="@drawable/ic_deadline" />
 
             <TextView
                 android:id="@+id/tv_detail_deadline"
+                style="@style/DetailStyle.Right"
+                android:text="2018-04-18 00:00:00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_detail_pickuptime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/DetailStyle.Left"
+                android:text="取货时间：" />
+
+            <ImageView
+                android:id="@+id/iv_detail_pickuptime"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_time" />
+
+            <TextView
+                android:id="@+id/tv_detail_pickuptime"
                 style="@style/DetailStyle.Right"
                 android:text="2018-04-18 00:00:00" />
         </LinearLayout>

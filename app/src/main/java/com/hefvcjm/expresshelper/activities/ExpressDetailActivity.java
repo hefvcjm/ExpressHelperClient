@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,11 @@ import com.hefvcjm.expresshelper.user.UserInfos;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by win10 on 2018/5/4.
  */
@@ -36,6 +42,7 @@ public class ExpressDetailActivity extends Activity {
     private static final int WHAT_STATECHANED_DELAYED = 1;
 
     private ExpressInfos expressInfos;
+    LinearLayout ll_detail_pickuptime;
     TextView tv_detail_state;
     TextView tv_detail_pickuptime;
     TextView tv_detail_company;
@@ -68,6 +75,18 @@ public class ExpressDetailActivity extends Activity {
                 case WHAT_STATECHANED_DELAYED:
                     bn_delay.setEnabled(false);
                     bn_delay.setBackground(getResources().getDrawable(R.drawable.bn_disable));
+                    String oldtime = tv_detail_deadline.getText().toString();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        Date newdate = dateFormat.parse(oldtime);
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(newdate);
+                        c.add(Calendar.DAY_OF_MONTH, 1);// +1天
+                        Date newtime = c.getTime();
+                        tv_detail_deadline.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(newtime));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 default:
                     break;
@@ -81,11 +100,13 @@ public class ExpressDetailActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_detail);
 
+        ll_detail_pickuptime = findViewById(R.id.ll_detail_pickuptime);
         tv_detail_state = findViewById(R.id.tv_detail_state);
         tv_detail_pickuptime = findViewById(R.id.tv_detail_pickuptime);
         tv_detail_company = findViewById(R.id.tv_detail_company);
         tv_detail_location = findViewById(R.id.tv_detail_location);
         tv_detail_deadline = findViewById(R.id.tv_detail_deadline);
+        tv_detail_pickuptime = findViewById(R.id.tv_detail_pickuptime);
         tv_detail_code = findViewById(R.id.tv_detail_code);
         iv_state = findViewById(R.id.iv_detail_state);
         iv_company = findViewById(R.id.iv_detail_company);
@@ -110,11 +131,14 @@ public class ExpressDetailActivity extends Activity {
         } else if (expressInfos.getState().equals(getResources().getString(R.string.str_state_refused))) {
             tv_detail_state.setTextColor(getResources().getColor(R.color.state_refused));
             iv_state.setImageDrawable(getResources().getDrawable(R.drawable.refused));
-        }else if (expressInfos.getState().equals(getResources().getString(R.string.str_state_overdue))){
+        } else if (expressInfos.getState().equals(getResources().getString(R.string.str_state_overdue))) {
             tv_detail_state.setTextColor(getResources().getColor(R.color.state_refused));
             iv_state.setImageDrawable(getResources().getDrawable(R.drawable.refused));
         }
-        tv_detail_pickuptime.setText(expressInfos.getPickuptime());
+        if (expressInfos.getPickuptime() != "") {
+            ll_detail_pickuptime.setVisibility(View.VISIBLE);
+            tv_detail_pickuptime.setText(expressInfos.getPickuptime());
+        }
         tv_detail_company.setText(expressInfos.getCompany());
         iv_company.setImageDrawable(matchLogo(expressInfos.getCompany()));
         tv_detail_location.setText(expressInfos.getLocation());
@@ -125,15 +149,15 @@ public class ExpressDetailActivity extends Activity {
             iv_barcode.setImageBitmap(Barcode.BarcodeFormatCode(expressInfos.getBarcode()));
         }
 
-        if (expressInfos.getState().equals(getResources().getString(R.string.str_state_refused))||
-                expressInfos.getState().equals(getResources().getString(R.string.str_state_received)) ){
+        if (expressInfos.getState().equals(getResources().getString(R.string.str_state_refused)) ||
+                expressInfos.getState().equals(getResources().getString(R.string.str_state_received))) {
             bn_refuse.setEnabled(false);
             bn_delay.setEnabled(false);
             bn_refuse.setBackground(getResources().getDrawable(R.drawable.bn_disable));
             bn_delay.setBackground(getResources().getDrawable(R.drawable.bn_disable));
         }
 
-        if (expressInfos.getDelay()=="1"){
+        if (expressInfos.getDelay().equals("1")) {
             bn_delay.setEnabled(false);
             bn_delay.setBackground(getResources().getDrawable(R.drawable.bn_disable));
         }
@@ -146,6 +170,7 @@ public class ExpressDetailActivity extends Activity {
                     new MyHttpClient(server_url
                             , new JSONObject().put("type", "update_express").put("Content-Type", "application/json;charset=utf-8")
                             , new JSONObject().put("barcode", expressInfos.getBarcode())
+                            .put("delay", "1")
                             , new MyHttpClient.ResponseListener() {
                         @Override
                         public void onResponse(String result) {

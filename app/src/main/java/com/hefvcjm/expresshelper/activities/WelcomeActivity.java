@@ -41,7 +41,7 @@ public class WelcomeActivity extends Activity {
                     break;
                 case WHAT_TOKEN_FAIL:
                     try {
-                        Thread.sleep(3000L);
+                        Thread.sleep(2000L);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
