@@ -66,7 +66,8 @@ public class ExpressDetailActivity extends Activity {
                     bn_delay.setBackground(getResources().getDrawable(R.drawable.bn_disable));
                     break;
                 case WHAT_STATECHANED_DELAYED:
-
+                    bn_delay.setEnabled(false);
+                    bn_delay.setBackground(getResources().getDrawable(R.drawable.bn_disable));
                     break;
                 default:
                     break;
@@ -132,10 +133,41 @@ public class ExpressDetailActivity extends Activity {
             bn_delay.setBackground(getResources().getDrawable(R.drawable.bn_disable));
         }
 
+        if (expressInfos.getDelay()=="1"){
+            bn_delay.setEnabled(false);
+            bn_delay.setBackground(getResources().getDrawable(R.drawable.bn_disable));
+        }
+
         bn_delay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String server_url = getResources().getString(R.string.str_server_url);
+                try {
+                    new MyHttpClient(server_url
+                            , new JSONObject().put("type", "update_express").put("Content-Type", "application/json;charset=utf-8")
+                            , new JSONObject().put("barcode", expressInfos.getBarcode())
+                            , new MyHttpClient.ResponseListener() {
+                        @Override
+                        public void onResponse(String result) {
+                            if (result == null) {
+                                Toast.makeText(ExpressDetailActivity.this, "发信息给服务器出了点问题！", Toast.LENGTH_LONG).show();
+                            } else {
+                                try {
+                                    JSONObject rsp = new JSONObject(result);
+                                    Toast.makeText(ExpressDetailActivity.this, rsp.getString("msg"), Toast.LENGTH_LONG).show();
+                                    Message msg = handler.obtainMessage();
+                                    msg.what = WHAT_STATECHANED_DELAYED;
+                                    handler.sendMessage(msg);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    System.out.println("result:" + result);
+                                }
+                            }
+                        }
+                    }).post();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

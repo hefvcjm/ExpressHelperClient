@@ -13,18 +13,18 @@ import java.util.Set;
  * 用于管理物流信息的类
  */
 public class ExpressInfos {
-    public enum State {
-        WAITING_FOR_PICKING_UP("待取货"), FINISHING_PICKING_UP("已领取"), DELAY_PICKING_UP("已延期"), REFUSE_PICKING_UP("已拒收"), EXPIRE_PICKING_UP("已过期");
-        private String name;
-
-        private State(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
+//    public enum State {
+//        WAITING_FOR_PICKING_UP("待取货"), FINISHING_PICKING_UP("已领取"), REFUSE_PICKING_UP("已拒收"), EXPIRE_PICKING_UP("已过期");
+//        private String name;
+//
+//        private State(String name) {
+//            this.name = name;
+//        }
+//
+//        public String getName() {
+//            return name;
+//        }
+//    }
 
     private String barcode = "";//条形码
     private String company = "";//快递公司
@@ -34,6 +34,7 @@ public class ExpressInfos {
     private String arrivetime = "";//到货时间
     private String pickuptime = "";//取货时间
     private String state = "";//状态
+    private String delay = "0";//是否延期过
 
     public ExpressInfos(String json) {
         try {
@@ -56,6 +57,14 @@ public class ExpressInfos {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getDelay() {
+        return delay;
+    }
+
+    public void setDelay(String delay) {
+        this.delay = delay;
     }
 
     public String getBarcode() {
@@ -127,7 +136,7 @@ public class ExpressInfos {
         String str = "{" + "\"barcode\":\"" + getBarcode() + "\"," + "\"company\":\"" + getCompany()
                 + "\"," + "\"location\":\"" + getLocation() + "\"," + "\"code\":\"" + getCode() + "\","
                 + "\"arrivetime\":\"" + getArrivetime() + "\"," + "\"pickuptime\":\"" + getPickuptime() + "\","
-                + "\"deadline\":\"" + getDeadline() + "\"," + "\"state\":\"" + getState() + "\"}";
+                + "\"deadline\":\"" + getDeadline() + "\"," + "\"state\":\"" + getState() + "\"," + "\"delay\":\"" + getDelay() + "\"}";
         return str;
     }
 

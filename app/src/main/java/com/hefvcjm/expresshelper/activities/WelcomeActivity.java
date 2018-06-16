@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.hefvcjm.expresshelper.R;
 import com.hefvcjm.expresshelper.net.MyHttpClient;
+import com.hefvcjm.expresshelper.storage.Storage;
 
 /**
  * 欢迎页
@@ -39,6 +40,11 @@ public class WelcomeActivity extends Activity {
                     finish();
                     break;
                 case WHAT_TOKEN_FAIL:
+                    try {
+                        Thread.sleep(3000L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
                     finish();
                     break;
@@ -58,7 +64,7 @@ public class WelcomeActivity extends Activity {
         setContentView(R.layout.layout_welcome);
 
 
-        token = loadToken();
+        token = Storage.getInstance(WelcomeActivity.this).loadToken();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -68,7 +74,8 @@ public class WelcomeActivity extends Activity {
 //                    e.printStackTrace();
 //                }
                 if (token != null) {
-                    server_url = getResources().getString(R.string.str_server_url);;
+                    server_url = getResources().getString(R.string.str_server_url);
+                    ;
                     try {
                         new MyHttpClient(server_url
                                 , new JSONObject().put("type", "token_login").put("Content-Type", "application/json;charset=utf-8")
@@ -85,9 +92,7 @@ public class WelcomeActivity extends Activity {
                                         if (rsp.getString("msg").equals("登录成功！")) {
                                             String token = rsp.getString("token");
                                             if (token != null) {
-                                                SharedPreferences.Editor editor = getSharedPreferences("token", MODE_PRIVATE).edit();
-                                                editor.putString("token", token);
-                                                editor.commit();
+                                                Storage.getInstance(WelcomeActivity.this).saveToken(token);
                                             }
                                             phone = rsp.getString("phone");
                                             Message msg = handler.obtainMessage();
@@ -120,12 +125,5 @@ public class WelcomeActivity extends Activity {
                 }
             }
         }).start();
-    }
-
-    private String loadToken() {
-        String token;
-        SharedPreferences pref = getSharedPreferences("token", MODE_PRIVATE);
-        token = pref.getString("token", null);
-        return token;
     }
 }

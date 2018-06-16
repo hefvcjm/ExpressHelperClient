@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import com.hefvcjm.expresshelper.R;
 import com.hefvcjm.expresshelper.net.MyHttpClient;
+import com.hefvcjm.expresshelper.storage.Storage;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -143,9 +144,7 @@ public class LoginActivity extends Activity {
                                     }
                                     String token = rsp.getString("token");
                                     if (token != null) {
-                                        SharedPreferences.Editor editor = getSharedPreferences("token", MODE_PRIVATE).edit();
-                                        editor.putString("token", token);
-                                        editor.commit();
+                                        Storage.getInstance(LoginActivity.this).saveToken(token);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
