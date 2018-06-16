@@ -38,26 +38,13 @@ public class ExpressListActivity extends Activity {
     private List<ExpressInfos> expressList = new ArrayList<ExpressInfos>();
     private String url;
     private String phone;
-    ExpressListAdapter adapter;
+    private ExpressListAdapter adapter;
 
-    ListView lv_express_list;
+    private ListView lv_express_list;
 
-
-    private Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case WHAT_DATASETCHANED:
-                    adapter.notifyDataSetChanged();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -101,15 +88,15 @@ public class ExpressListActivity extends Activity {
                             int visibleLastPosition = lv_express_list.getLastVisiblePosition();
                             if (position >= visibleFirstPosition && position <= visibleLastPosition) {
                                 View view = lv_express_list.getChildAt(position - visibleFirstPosition);
-                                ExpressListAdapter.ViewHolder holder = (ExpressListAdapter.ViewHolder)view.getTag();
+                                ExpressListAdapter.ViewHolder holder = (ExpressListAdapter.ViewHolder) view.getTag();
                                 holder.tv_express_state.setText(state);
-                                if (state.equals(getResources().getString(R.string.str_state_receiving))){
+                                if (state.equals(getResources().getString(R.string.str_state_receiving))) {
                                     holder.tv_express_state.setTextColor(getResources().getColor(R.color.state_receiving));
                                     holder.iv_state.setImageDrawable(getResources().getDrawable(R.drawable.receiving));
-                                }else if (state.equals(getResources().getString(R.string.str_state_received))){
+                                } else if (state.equals(getResources().getString(R.string.str_state_received))) {
                                     holder.tv_express_state.setTextColor(getResources().getColor(R.color.state_received));
                                     holder.iv_state.setImageDrawable(getResources().getDrawable(R.drawable.received));
-                                }else if (state.equals(getResources().getString(R.string.str_state_refused))){
+                                } else if (state.equals(getResources().getString(R.string.str_state_refused))) {
                                     holder.tv_express_state.setTextColor(getResources().getColor(R.color.state_refused));
                                     holder.iv_state.setImageDrawable(getResources().getDrawable(R.drawable.refused));
                                 }
@@ -139,25 +126,46 @@ public class ExpressListActivity extends Activity {
                     if (result == null) {
                         return;
                     }
-                    try {
-                        JSONObject js = new JSONObject(result);
-                        int n = new Integer(js.getString("total"));
-                        for (int i = 1; i < n + 1; i++) {
-                            JSONObject sub = new JSONObject(js.getString(i + ""));
-                            //barcode,company,location,code,deadline,state
-                            expressList.add(new ExpressInfos(sub.toString()));
+                    new AsyncTask<String, Integer, List<ExpressInfos>>() {
+
+                        @Override
+                        protected List<ExpressInfos> doInBackground(String... strings) {
+                            String result = strings[0];
+                            List<ExpressInfos> temp = new ArrayList<ExpressInfos>();
+                            try {
+                                JSONObject js = new JSONObject(result);
+                                int n = new Integer(js.getString("total"));
+                                Log.d("test", n + "");
+                                for (int i = 1; i < n + 1; i++) {
+                                    JSONObject sub = new JSONObject(js.getString(i + ""));
+                                    Log.d("test", sub.toString());
+                                    //barcode,company,location,code,deadline,state
+                                    temp.add(new ExpressInfos(sub.toString()));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            return temp;
                         }
-                        Message msg = handler.obtainMessage();
-                        msg.what = WHAT_DATASETCHANED;
-                        handler.sendMessage(msg);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+
+                        @Override
+                        protected void onPostExecute(List<ExpressInfos> temp) {
+                            if (temp != null) {
+                                expressList.addAll(temp);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }.execute(result);
                 }
             }).post();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void initExpressInfos() {

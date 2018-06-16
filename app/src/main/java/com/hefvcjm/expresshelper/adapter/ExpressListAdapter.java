@@ -70,7 +70,7 @@ public class ExpressListAdapter extends ArrayAdapter<ExpressInfos> {
             viewHolder.tv_express_state.setTextColor(context.getResources().getColor(R.color.state_refused));
             viewHolder.iv_state.setImageDrawable(context.getResources().getDrawable(R.drawable.refused));
         }
-        if (expressInfos.getArrivetime() != "") {
+        if (!expressInfos.getArrivetime().equals("")) {
             String date = expressInfos.getArrivetime().split(" ")[0];
             int month = new Integer(date.split("-")[1]);
             int day = new Integer(date.split("-")[2]);
