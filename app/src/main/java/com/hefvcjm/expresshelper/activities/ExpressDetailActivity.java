@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -135,7 +136,8 @@ public class ExpressDetailActivity extends Activity {
             tv_detail_state.setTextColor(getResources().getColor(R.color.state_refused));
             iv_state.setImageDrawable(getResources().getDrawable(R.drawable.refused));
         }
-        if (expressInfos.getPickuptime() != "") {
+        if (!expressInfos.getPickuptime().equals("")) {
+            Log.d("test","_"+expressInfos.getPickuptime()+"|");
             ll_detail_pickuptime.setVisibility(View.VISIBLE);
             tv_detail_pickuptime.setText(expressInfos.getPickuptime());
         }
