@@ -19,12 +19,6 @@
         app:headerLayout="@layout/nav_header_drawer_layout_one"
         app:menu="@menu/activity_drawer_layout_one_drawer">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="test" />
-
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

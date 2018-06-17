@@ -8,7 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -259,6 +261,15 @@ public class ExpressDetailActivity extends Activity {
             }
         });
 
+    }
+
+    public void doClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_title_logo:
+                break;
+            default:
+                break;
+        }
     }
 
     private Drawable matchLogo(String company) {

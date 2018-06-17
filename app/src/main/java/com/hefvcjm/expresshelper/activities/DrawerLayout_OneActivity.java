@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.hefvcjm.expresshelper.R;
+import com.hefvcjm.expresshelper.activities.nav_activities.AboutActivity;
+import com.hefvcjm.expresshelper.activities.nav_activities.MeActivity;
+import com.hefvcjm.expresshelper.activities.nav_activities.SecurityActivity;
+import com.hefvcjm.expresshelper.activities.nav_activities.SettingActivity;
 import com.hefvcjm.expresshelper.adapter.ExpressListAdapter;
 import com.hefvcjm.expresshelper.express.ExpressInfos;
 import com.hefvcjm.expresshelper.net.MyHttpClient;
@@ -33,7 +38,7 @@ import java.util.List;
 
 /**
  * 通过模板生成的DrawerLayout+NavigationView布局,也是最常见的APP展示方式
- * */
+ */
 public class DrawerLayout_OneActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final int REQUESTCODE_STATE_CHAGED = 1;
@@ -44,10 +49,10 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
     private ExpressListAdapter adapter;
 
     private ListView lv_express_list;
+    private DrawerLayout drawerLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_express_list);
 
@@ -62,6 +67,7 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         url = getResources().getString(R.string.str_server_url);
         Intent intent = getIntent();
@@ -85,6 +91,20 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
             }
         });
     }
+
+
+    public void doClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_title_logo:
+                drawerLayout.openDrawer(Gravity.LEFT);
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED,
+                        Gravity.RIGHT);
+                break;
+            default:
+                break;
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -176,8 +196,7 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -186,38 +205,31 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.drawer_layout_one, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item)
-    {
+    public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        switch (id) {
+            case R.id.nav_me:
+                startActivity(new Intent(DrawerLayout_OneActivity.this, MeActivity.class));
+                break;
+            case R.id.nav_about:
+                startActivity(new Intent(DrawerLayout_OneActivity.this, AboutActivity.class));
+                break;
+            case R.id.nav_security:
+                startActivity(new Intent(DrawerLayout_OneActivity.this, SecurityActivity.class));
+                break;
+            case R.id.nav_setting:
+                startActivity(new Intent(DrawerLayout_OneActivity.this, SettingActivity.class));
+                break;
+            case R.id.nav_logout:
+                break;
+            default:
+                break;
+        }
         return true;
     }
 }

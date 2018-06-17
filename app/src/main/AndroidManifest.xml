@@ -42,6 +42,10 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.DrawerLayout_OneActivity" />
         <activity android:name=".activities.ExpressDetailActivity" />
+        <activity android:name=".activities.nav_activities.MeActivity"/>
+        <activity android:name=".activities.nav_activities.AboutActivity"/>
+        <activity android:name=".activities.nav_activities.SecurityActivity"/>
+        <activity android:name=".activities.nav_activities.SettingActivity"/>
 
 
         <!-- For test only 测试状态通知栏，需要打开的Activity -->
