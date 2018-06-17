@@ -36,7 +36,7 @@ public class WelcomeActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case WHAT_TOKEN_PASS:
-                    startActivity(new Intent(WelcomeActivity.this, ExpressListActivity.class).putExtra("phone", phone));
+                    startActivity(new Intent(WelcomeActivity.this, DrawerLayout_OneActivity.class).putExtra("phone", phone));
                     finish();
                     break;
                 case WHAT_TOKEN_FAIL:

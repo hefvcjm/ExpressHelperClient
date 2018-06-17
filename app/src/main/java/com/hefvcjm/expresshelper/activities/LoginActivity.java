@@ -46,7 +46,7 @@ public class LoginActivity extends Activity {
             switch (msg.what) {
                 case WHAT_LOGIN:
                     JPushInterface.setAlias(LoginActivity.this, 0, phone);
-                    startActivity(new Intent(LoginActivity.this, ExpressListActivity.class).putExtra("phone", phone));
+                    startActivity(new Intent(LoginActivity.this, DrawerLayout_OneActivity.class).putExtra("phone", phone));
                     finish();
                     break;
                 default:
@@ -65,7 +65,7 @@ public class LoginActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_login);
 
-        server_url = getResources().getString(R.string.str_server_url);;
+        server_url = getResources().getString(R.string.str_server_url);
         Button bn_login = findViewById(R.id.bn_login);
         Button bn_send_vcode = findViewById(R.id.bn_send_vcode);
         final EditText et_phone = findViewById(R.id.et_phone);
