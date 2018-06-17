@@ -27,6 +27,8 @@ public class ExpressInfos {
 //    }
 
     private String barcode = "";//条形码
+    private String phone = "";//收货人手机号码
+    private String name = "";//收货人姓名
     private String company = "";//快递公司
     private String location = "";//取货地点
     private String code = "";//取货码
@@ -57,6 +59,22 @@ public class ExpressInfos {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDelay() {
@@ -133,8 +151,9 @@ public class ExpressInfos {
     }
 
     public String toString() {
-        String str = "{" + "\"barcode\":\"" + getBarcode() + "\"," + "\"company\":\"" + getCompany()
-                + "\"," + "\"location\":\"" + getLocation() + "\"," + "\"code\":\"" + getCode() + "\","
+        String str = "{" + "\"barcode\":\"" + getBarcode() + "\"," + "\"phone\":\"" + getPhone() + "\","
+                + "\"name\":\"" + getName() + "\"," + "\"company\":\"" + getCompany() + "\","
+                + "\"location\":\"" + getLocation() + "\"," + "\"code\":\"" + getCode() + "\","
                 + "\"arrivetime\":\"" + getArrivetime() + "\"," + "\"pickuptime\":\"" + getPickuptime() + "\","
                 + "\"deadline\":\"" + getDeadline() + "\"," + "\"state\":\"" + getState() + "\"," + "\"delay\":\"" + getDelay() + "\"}";
         return str;

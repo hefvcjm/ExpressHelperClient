@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/result_minor_text" />
+    <size
+        android:height="1dp"
+        android:width="1000dp" />
+</shape>
 
-    <item
-        android:state_focused="true">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/colorPrimary"/>
-            <size
-                android:height="1dp"
-                android:width="1000dp"/>
-        </shape>
-    </item>
 
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/loginDefault"/>
-            <size
-                android:height="1dp"
-                android:width="1000dp"/>
-        </shape>
-    </item>
-
-</selector>

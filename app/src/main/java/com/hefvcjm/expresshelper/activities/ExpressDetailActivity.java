@@ -60,6 +60,7 @@ public class ExpressDetailActivity extends Activity {
     Button bn_refuse;
 
     Intent result_intent;
+    int position;
 
     private Handler handler = new Handler() {
 
@@ -121,7 +122,7 @@ public class ExpressDetailActivity extends Activity {
         result_intent = new Intent();
         Intent intent = getIntent();
         String data = intent.getStringExtra("express_detail");
-        final int position = intent.getIntExtra("position", -1);
+        position = intent.getIntExtra("position", -1);
         System.out.println("express_detail:" + data);
         expressInfos = new ExpressInfos(data);
         tv_detail_state.setText(expressInfos.getState());
@@ -290,6 +291,9 @@ public class ExpressDetailActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        if (position==0){
+            finish();
+        }
         if (result_intent.hasExtra("result")) {
             setResult(ExpressListActivity.REQUESTCODE_STATE_CHAGED, result_intent);
         } else {

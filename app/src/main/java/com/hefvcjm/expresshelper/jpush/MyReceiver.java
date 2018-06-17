@@ -9,9 +9,13 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.hefvcjm.expresshelper.R;
+import com.hefvcjm.expresshelper.activities.ExpressDetailActivity;
+import com.hefvcjm.expresshelper.activities.ExpressListActivity;
 import com.hefvcjm.expresshelper.activities.TestActivity;
+import com.hefvcjm.expresshelper.express.ExpressInfos;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,13 +61,19 @@ public class MyReceiver extends BroadcastReceiver {
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
-
-                //打开自定义的Activity
-                Intent i = new Intent(context, TestActivity.class);
-                i.putExtras(bundle);
-                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(i);
+                Intent i = new Intent(context, ExpressDetailActivity.class);
+                ExpressInfos expressInfos = getDetailJson(bundle);
+                if (expressInfos!=null){
+                    i.putExtra("express_detail", expressInfos.toString());
+                    i.putExtra("position", 0);
+                    Log.d(TAG, expressInfos.toString());
+                    //打开自定义的Activity
+//                Intent i = new Intent(context, TestActivity.class);
+//                i.putExtras(bundle);
+                    //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(i);
+                }
 
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Logger.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
@@ -98,12 +108,14 @@ public class MyReceiver extends BroadcastReceiver {
 
                 try {
                     JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                    Logger.d(TAG, "json--" + json.toString());
                     Iterator<String> it = json.keys();
 
                     while (it.hasNext()) {
                         String myKey = it.next();
                         sb.append("\nkey:" + key + ", value: [" +
                                 myKey + " - " + json.optString(myKey) + "]");
+                        Logger.d(TAG, myKey + " : " + json.optString(myKey));
                     }
                 } catch (JSONException e) {
                     Logger.e(TAG, "Get message extra JSON error!");
@@ -114,6 +126,33 @@ public class MyReceiver extends BroadcastReceiver {
             }
         }
         return sb.toString();
+    }
+
+    private ExpressInfos getDetailJson(Bundle bundle) {
+        JSONObject json = null;
+        for (String key : bundle.keySet()) {
+            if (key.equals(JPushInterface.EXTRA_EXTRA)) {
+                if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
+                    Logger.i(TAG, "This message has no Extra data");
+                    continue;
+                }
+                try {
+                    JSONObject json_extras = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                    Logger.d(TAG, "json--" + json_extras.toString());
+                    Iterator<String> it = json_extras.keys();
+                    while (it.hasNext()) {
+                        String myKey = it.next();
+                        if (myKey.equals("detail")) {
+                            json = new JSONObject(json_extras.getString(myKey));
+                            return new ExpressInfos(json.toString());
+                        }
+                    }
+                } catch (JSONException e) {
+                    Logger.e(TAG, "Get message extra JSON error!");
+                }
+            }
+        }
+        return null;
     }
 
     //send msg to MainActivity

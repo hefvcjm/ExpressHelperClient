@@ -9,9 +9,10 @@
         android:id="@+id/bn_back"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:onClick="doClick"
+        android:scaleType="fitStart"
         android:src="@drawable/selector_back" />
 
     <TextView

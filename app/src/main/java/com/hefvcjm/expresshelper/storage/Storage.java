@@ -2,6 +2,7 @@ package com.hefvcjm.expresshelper.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.hefvcjm.expresshelper.express.ExpressInfos;
 
@@ -12,6 +13,7 @@ public class Storage {
     public static final String PATH_ROOT = "express_helper";//应用根目录
     public static final String PATH_EXPRESS_INFOS = "express_helper/express_infos";//物流信息存储路径
     public static final String PATH_USER_INFOS = "express_helper/user_infos";//用户信息路径
+    private static final String PREF_PATH = "/data/data/com.hefvcjm.expresshelper/shared_prefs";//pref文件路径
 
     private Context context;
 
@@ -99,6 +101,10 @@ public class Storage {
         SharedPreferences.Editor editor = context.getSharedPreferences("token", Context.MODE_PRIVATE).edit();
         editor.putString("token", token);
         editor.apply();
+    }
+
+    public void clearTokenCache() {
+        saveToken("");
     }
 
 }

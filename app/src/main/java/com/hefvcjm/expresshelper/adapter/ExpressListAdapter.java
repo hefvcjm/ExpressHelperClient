@@ -76,6 +76,7 @@ public class ExpressListAdapter extends ArrayAdapter<ExpressInfos> {
             int day = new Integer(date.split("-")[2]);
             viewHolder.tv_express_time.setText(month + "月" + day + "日");
         }
+        viewHolder.tv_express_company.setVisibility(View.GONE);
         return view;
     }
 

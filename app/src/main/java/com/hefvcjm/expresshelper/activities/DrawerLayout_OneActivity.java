@@ -1,5 +1,6 @@
 package com.hefvcjm.expresshelper.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,6 +29,7 @@ import com.hefvcjm.expresshelper.activities.nav_activities.SettingActivity;
 import com.hefvcjm.expresshelper.adapter.ExpressListAdapter;
 import com.hefvcjm.expresshelper.express.ExpressInfos;
 import com.hefvcjm.expresshelper.net.MyHttpClient;
+import com.hefvcjm.expresshelper.storage.Storage;
 import com.hefvcjm.expresshelper.user.UserInfos;
 
 import org.json.JSONException;
@@ -226,10 +229,33 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                 startActivity(new Intent(DrawerLayout_OneActivity.this, SettingActivity.class));
                 break;
             case R.id.nav_logout:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DrawerLayout_OneActivity.this);
+                dialog.setIcon(R.drawable.ic_warning)
+                        .setTitle("提醒")
+                        .setMessage("是否注销当前用户？");
+                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                });
+                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
                 break;
             default:
                 break;
         }
         return true;
+    }
+
+    private void logout() {
+        Storage.getInstance(DrawerLayout_OneActivity.this).clearTokenCache();
+        startActivity(new Intent(DrawerLayout_OneActivity.this, LoginActivity.class));
+        finish();
     }
 }
