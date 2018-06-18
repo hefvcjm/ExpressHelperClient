@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.hefvcjm.expresshelper.R;
+import com.hefvcjm.expresshelper.activities.DrawerLayout_OneActivity;
 import com.hefvcjm.expresshelper.activities.ExpressDetailActivity;
-import com.hefvcjm.expresshelper.activities.ExpressListActivity;
-import com.hefvcjm.expresshelper.activities.TestActivity;
 import com.hefvcjm.expresshelper.express.ExpressInfos;
 
 import org.json.JSONException;
@@ -54,7 +52,6 @@ public class MyReceiver extends BroadcastReceiver {
             } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知");
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-
 //                receivingNotification(context, bundle);
 
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);

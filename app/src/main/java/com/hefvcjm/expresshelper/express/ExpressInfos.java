@@ -1,10 +1,18 @@
 package com.hefvcjm.expresshelper.express;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
@@ -12,7 +20,7 @@ import java.util.Set;
 /**
  * 用于管理物流信息的类
  */
-public class ExpressInfos {
+public class ExpressInfos implements Comparable<ExpressInfos>{
 //    public enum State {
 //        WAITING_FOR_PICKING_UP("待取货"), FINISHING_PICKING_UP("已领取"), REFUSE_PICKING_UP("已拒收"), EXPIRE_PICKING_UP("已过期");
 //        private String name;
@@ -44,10 +52,10 @@ public class ExpressInfos {
             Iterator<String> keys = jsonObject.keys();
             while (keys.hasNext()) {
                 String key = keys.next();
-                Class<?> userInfos = this.getClass();
+                Class<?> expressInfos = this.getClass();
                 String methodName = "set" + (key.toLowerCase().charAt(0) + "").toUpperCase(Locale.ROOT) + key.toLowerCase().substring(1);
 //                System.out.println("methodName:" + methodName);
-                Method method = userInfos.getMethod(methodName, String.class);
+                Method method = expressInfos.getMethod(methodName, String.class);
                 method.invoke(this, jsonObject.getString(key));
             }
         } catch (JSONException je) {
@@ -159,4 +167,25 @@ public class ExpressInfos {
         return str;
     }
 
+    @Override
+    public int compareTo(@NonNull ExpressInfos expressInfos) {
+        int i = 0;
+        try {
+            Long thisdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(this.getArrivetime()).getTime();
+            Long otherdate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expressInfos.getArrivetime()).getTime();
+            Long judge = otherdate - thisdate;
+            Log.d("compare", judge + "");
+            if (judge == 0) {
+                i = 0;
+            } else if (judge < 0) {
+                i = -1;
+            } else {
+                i = 1;
+            }
+        } catch (ParseException e) {
+            Log.d("compare",   "error");
+            e.printStackTrace();
+        }
+        return i;
+    }
 }

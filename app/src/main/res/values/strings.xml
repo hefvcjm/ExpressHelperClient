@@ -13,7 +13,7 @@
     <!-- phone: 192.168.43.253 -->
     <!-- school: 192.168.2224 -->
     <!-- remote: 39.106.3.215 -->
-    <string name="str_server_url">http://39.106.3.215:8443/</string>
+    <string name="str_server_url">http://192.168.43.253:8443/</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -36,7 +36,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -76,6 +79,7 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         Intent intent = getIntent();
         phone = intent.getStringExtra("phone");
         UserInfos.getInstance().setPhone(phone);
+        Collections.sort(expressList);
         adapter = new ExpressListAdapter(DrawerLayout_OneActivity.this, R.layout.item_list_express, expressList);
         lv_express_list = (ListView) findViewById(R.id.lv_express_list);
         lv_express_list.setAdapter(adapter);
@@ -171,11 +175,17 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                                 JSONObject js = new JSONObject(result);
                                 int n = new Integer(js.getString("total"));
                                 Log.d("test", n + "");
+                                Set<String> barcodes = new HashSet<>();
+                                for (ExpressInfos e : expressList) {
+                                    barcodes.add(e.getBarcode());
+                                }
                                 for (int i = 1; i < n + 1; i++) {
                                     JSONObject sub = new JSONObject(js.getString(i + ""));
                                     Log.d("test", sub.toString());
                                     //barcode,company,location,code,deadline,state
-                                    temp.add(new ExpressInfos(sub.toString()));
+                                    if (!barcodes.contains(sub.getString("barcode"))) {
+                                        temp.add(new ExpressInfos(sub.toString()));
+                                    }
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -187,6 +197,7 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                         protected void onPostExecute(List<ExpressInfos> temp) {
                             if (temp != null) {
                                 expressList.addAll(temp);
+                                Collections.sort(expressList);
                                 adapter.notifyDataSetChanged();
                             }
                         }
@@ -206,6 +217,12 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        synchronize_express(url, phone);
+        super.onStart();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
