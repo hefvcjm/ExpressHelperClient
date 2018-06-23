@@ -4,18 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -75,11 +71,11 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         navigationView.setNavigationItemSelectedListener(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        url = getResources().getString(R.string.str_server_url);
+        url = getResources().getString(R.string.str_server_url) + "/query/expresses";
         Intent intent = getIntent();
         phone = intent.getStringExtra("phone");
         UserInfos.getInstance().setPhone(phone);
-        Collections.sort(expressList);
+//        Collections.sort(expressList);
         adapter = new ExpressListAdapter(DrawerLayout_OneActivity.this, R.layout.item_list_express, expressList);
         lv_express_list = (ListView) findViewById(R.id.lv_express_list);
         lv_express_list.setAdapter(adapter);
@@ -157,12 +153,12 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
     private void synchronize_express(final String url, String phone) {
         try {
             new MyHttpClient(url
-                    , new JSONObject().put("type", "query_express_info").put("Content-Type", "application/json;charset=utf-8")
+                    , new JSONObject().put("Content-Type", "application/json;charset=utf-8")
                     , new JSONObject().put("phone", phone)
                     , new MyHttpClient.ResponseListener() {
                 @Override
-                public void onResponse(String result) {
-                    if (result == null) {
+                public void onResponse(String body, JSONObject headers) {
+                    if (body == null) {
                         return;
                     }
                     new AsyncTask<String, Integer, List<ExpressInfos>>() {
@@ -175,12 +171,16 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                                 JSONObject js = new JSONObject(result);
                                 int n = new Integer(js.getString("total"));
                                 Log.d("test", n + "");
+                                List<String> datas = null;
+                                if (!js.getString("data").equals("null")) {
+                                    datas = new ArrayList<String>(Arrays.asList(js.getString("data").split(",")));
+                                }
                                 Set<String> barcodes = new HashSet<>();
                                 for (ExpressInfos e : expressList) {
                                     barcodes.add(e.getBarcode());
                                 }
-                                for (int i = 1; i < n + 1; i++) {
-                                    JSONObject sub = new JSONObject(js.getString(i + ""));
+                                for (String str : datas) {
+                                    JSONObject sub = new JSONObject(str);
                                     Log.d("test", sub.toString());
                                     //barcode,company,location,code,deadline,state
                                     if (!barcodes.contains(sub.getString("barcode"))) {
@@ -196,12 +196,13 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                         @Override
                         protected void onPostExecute(List<ExpressInfos> temp) {
                             if (temp != null) {
+                                expressList.clear();
                                 expressList.addAll(temp);
-                                Collections.sort(expressList);
+//                                Collections.sort(expressList);
                                 adapter.notifyDataSetChanged();
                             }
                         }
-                    }.execute(result);
+                    }.execute(body);
                 }
             }).post();
         } catch (JSONException e) {

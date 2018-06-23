@@ -18,6 +18,8 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by win10 on 2018/5/3.
@@ -73,12 +75,22 @@ public class MyHttpClient {
                     }
                     // 连接，从上述第2条中url.openConnection()至此的配置必须要在connect之前完成，
                     connection.connect();
-
                     String body = contents.toString();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
                     writer.write(body);
                     writer.close();
                     int responseCode = connection.getResponseCode();
+                    Map<String, List<String>> headersMap = connection.getHeaderFields();
+                    JSONObject rspHeaders = new JSONObject();
+                    if (headersMap != null) {
+                        for (Map.Entry<String, List<String>> entry : headersMap.entrySet()) {
+                            Log.d("cookie", "key:" + entry.getKey() + ",value:" + entry.getValue().toString().substring(1, entry.getValue().toString().length() - 1));
+                            if (entry.getKey() == null) {
+                                continue;
+                            }
+                            rspHeaders.put(entry.getKey(), entry.getValue());
+                        }
+                    }
                     if (responseCode == HttpURLConnection.HTTP_OK) {
                         InputStream inputStream = connection.getInputStream();
                         String result = "";
@@ -91,12 +103,12 @@ public class MyHttpClient {
                         }
                         Log.d(TAG, "result:" + result);
                         Looper.prepare();
-                        responseListener.onResponse(result);
+                        responseListener.onResponse(result, rspHeaders);
                         Looper.loop();
                         return;
                     } else {
                         Looper.prepare();
-                        responseListener.onResponse(null);
+                        responseListener.onResponse(null, rspHeaders);
                         Looper.loop();
                         return;
                     }
@@ -108,7 +120,7 @@ public class MyHttpClient {
                     }
                     try {
                         Looper.prepare();
-                        responseListener.onResponse(new JSONObject().put("msg", err).toString());
+                        responseListener.onResponse(new JSONObject().put("msg", err).toString(), null);
                         Looper.loop();
                         return;
                     } catch (JSONException e1) {
@@ -120,6 +132,6 @@ public class MyHttpClient {
     }
 
     public interface ResponseListener {
-        void onResponse(String result);
+        void onResponse(String body, JSONObject headers);
     }
 }

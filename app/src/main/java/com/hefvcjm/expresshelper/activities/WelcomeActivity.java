@@ -74,22 +74,22 @@ public class WelcomeActivity extends Activity {
 //                    e.printStackTrace();
 //                }
                 if (token != null) {
-                    server_url = getResources().getString(R.string.str_server_url);
+                    server_url = getResources().getString(R.string.str_server_url) + "/login/token";
                     ;
                     try {
                         new MyHttpClient(server_url
-                                , new JSONObject().put("type", "token_login").put("Content-Type", "application/json;charset=utf-8")
+                                , new JSONObject().put("Content-Type", "application/json;charset=utf-8")
                                 , new JSONObject().put("token", token), new MyHttpClient.ResponseListener() {
                             @Override
-                            public void onResponse(String result) {
-                                if (result == null) {
+                            public void onResponse(String body, JSONObject headers) {
+                                if (body == null) {
                                     Message msg = handler.obtainMessage();
                                     msg.what = WHAT_TOKEN_FAIL;
                                     handler.sendMessage(msg);
                                 } else {
                                     try {
-                                        JSONObject rsp = new JSONObject(result);
-                                        if (rsp.getString("msg").equals("登录成功！")) {
+                                        JSONObject rsp = new JSONObject(body);
+                                        if (rsp.getInt("code") == 1) {
                                             String token = rsp.getString("token");
                                             if (token != null) {
                                                 Storage.getInstance(WelcomeActivity.this).saveToken(token);

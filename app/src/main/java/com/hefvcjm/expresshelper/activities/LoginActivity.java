@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,6 +24,12 @@ import org.json.JSONObject;
 import com.hefvcjm.expresshelper.R;
 import com.hefvcjm.expresshelper.net.MyHttpClient;
 import com.hefvcjm.expresshelper.storage.Storage;
+
+import java.net.CookieManager;
+import java.net.HttpCookie;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -38,6 +45,7 @@ public class LoginActivity extends Activity {
     private String imei;
     private String mac;
     private String phone;
+    private String cookies;
 
     private Handler handler = new Handler() {
 
@@ -84,20 +92,32 @@ public class LoginActivity extends Activity {
                     return;
                 }
                 try {
-                    new MyHttpClient(server_url
-                            , new JSONObject().put("type", "vcode").put("Content-Type", "application/json;charset=utf-8")
+                    new MyHttpClient(server_url + "/vcode"
+                            , new JSONObject().put("Content-Type", "application/json;charset=utf-8")
                             , new JSONObject().put("phone", et_phone.getText().toString()), new MyHttpClient.ResponseListener() {
                         @Override
-                        public void onResponse(String result) {
-                            if (result == null) {
+                        public void onResponse(String body, JSONObject headers) {
+                            if (body == null) {
                                 Toast.makeText(LoginActivity.this, "发送验证码出了点问题！", Toast.LENGTH_LONG).show();
                             } else {
                                 try {
-                                    JSONObject rsp = new JSONObject(result);
+                                    JSONObject rsp = new JSONObject(body);
+                                    if (headers != null) {
+                                        List<String> cookiesHeader = (List<String>) headers.get("Set-Cookie");
+                                        if (cookiesHeader != null) {
+                                            CookieManager cookieManager = new CookieManager();
+                                            for (String cookie : cookiesHeader) {
+                                                cookieManager.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
+                                            }
+                                            if (cookieManager.getCookieStore().getCookies().size() > 0) {
+                                                cookies = TextUtils.join(";", cookieManager.getCookieStore().getCookies());
+                                            }
+                                        }
+                                    }
                                     Toast.makeText(LoginActivity.this, rsp.getString("msg"), Toast.LENGTH_LONG).show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    System.out.println("result:" + result);
+                                    System.out.println("result:" + body);
                                 }
                             }
                         }
@@ -120,23 +140,23 @@ public class LoginActivity extends Activity {
                     return;
                 }
                 try {
-                    new MyHttpClient(server_url
-                            , new JSONObject().put("type", "login")
-                            .put("Content-Type", "application/json;charset=utf-8")
+                    new MyHttpClient(server_url + "/login/vcode"
+                            , new JSONObject()
+                            .put("Content-Type", "application/json;charset=utf-8").put("Cookie", cookies)
                             , new JSONObject().put("phone", et_phone.getText().toString())
-                            .put("vcode", et_vcode.getText().toString())
+                            .put("code", et_vcode.getText().toString())
                             .put("imei", imei)
                             .put("mac", mac)
                             , new MyHttpClient.ResponseListener() {
                         @Override
-                        public void onResponse(String result) {
-                            if (result == null) {
+                        public void onResponse(String body, JSONObject headers) {
+                            if (body == null) {
                                 Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_LONG).show();
                             } else {
                                 try {
-                                    JSONObject rsp = new JSONObject(result);
+                                    JSONObject rsp = new JSONObject(body);
                                     Toast.makeText(LoginActivity.this, rsp.getString("msg"), Toast.LENGTH_LONG).show();
-                                    if (rsp.getString("msg").equals("登录成功！")) {
+                                    if (rsp.getInt("code") == 1) {
                                         phone = et_phone.getText().toString();
                                         Message msg = handler.obtainMessage();
                                         msg.what = WHAT_LOGIN;
