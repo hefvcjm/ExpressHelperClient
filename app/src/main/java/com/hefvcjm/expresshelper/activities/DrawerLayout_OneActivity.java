@@ -173,18 +173,26 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                                 Log.d("test", n + "");
                                 List<String> datas = null;
                                 if (!js.getString("data").equals("null")) {
-                                    datas = new ArrayList<String>(Arrays.asList(js.getString("data").split(",")));
+                                    String str = js.getString("data");
+                                    datas = (List<String>) js.getJSONArray("data");
+//                                    str = str.substring(1, str.length() - 1);
+//                                    Log.d("datas", "--:" + str);
+//                                    datas = new ArrayList<String>(Arrays.asList(str.split(",")));
+                                    Log.d("datas", datas.toString());
                                 }
                                 Set<String> barcodes = new HashSet<>();
                                 for (ExpressInfos e : expressList) {
                                     barcodes.add(e.getBarcode());
                                 }
-                                for (String str : datas) {
-                                    JSONObject sub = new JSONObject(str);
-                                    Log.d("test", sub.toString());
-                                    //barcode,company,location,code,deadline,state
-                                    if (!barcodes.contains(sub.getString("barcode"))) {
-                                        temp.add(new ExpressInfos(sub.toString()));
+                                if (datas != null) {
+                                    for (String str : datas) {
+                                        Log.d("datas", "str=" + str);
+                                        JSONObject sub = new JSONObject(str);
+                                        Log.d("datas", sub.toString());
+                                        //barcode,company,location,code,deadline,state
+                                        if (!barcodes.contains(sub.getString("barcode"))) {
+                                            temp.add(new ExpressInfos(sub.toString()));
+                                        }
                                     }
                                 }
                             } catch (JSONException e) {
