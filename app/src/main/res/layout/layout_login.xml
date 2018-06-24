@@ -92,10 +92,10 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_vcode"
                 android:minHeight="0dp"
-                android:paddingBottom="5dp"
+                android:paddingBottom="3dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:paddingTop="5dp"
+                android:paddingTop="3dp"
                 android:text="获取验证码"
                 android:textColor="#F7F7F7"
                 android:textSize="12sp" />
@@ -114,9 +114,19 @@
             android:minHeight="0dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:textSize="20sp"
-            android:text="登录" />
+            android:text="登录"
+            android:textSize="20sp" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_change_login_way"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:text="way"
+        android:clickable="true"
+        android:textColor="@color/selector_change_login" />
 
 </LinearLayout>

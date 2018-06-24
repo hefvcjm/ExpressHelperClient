@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 /**
  * 通过模板生成的DrawerLayout+NavigationView布局,也是最常见的APP展示方式
@@ -80,6 +82,7 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         phone = intent.getStringExtra("phone");
         StaticInfos.setPhone(phone);
         UserInfos.getInstance().setPhone(phone);
+        JPushInterface.setAlias(DrawerLayout_OneActivity.this, 0, phone);
 //        Collections.sort(expressList);
         adapter = new ExpressListAdapter(DrawerLayout_OneActivity.this, R.layout.item_list_express, expressList);
         lv_express_list = (ListView) findViewById(R.id.lv_express_list);

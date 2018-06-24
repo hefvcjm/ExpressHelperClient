@@ -139,8 +139,8 @@ public class ExpressDetailActivity extends Activity {
             tv_detail_state.setTextColor(getResources().getColor(R.color.state_refused));
             iv_state.setImageDrawable(getResources().getDrawable(R.drawable.refused));
         }
-        if (!expressInfos.getPickuptime().equals("")) {
-            Log.d("test","_"+expressInfos.getPickuptime()+"|");
+        if (!expressInfos.getPickuptime().equals("null")) {
+            Log.d("test", "_" + expressInfos.getPickuptime() + "|");
             ll_detail_pickuptime.setVisibility(View.VISIBLE);
             tv_detail_pickuptime.setText(expressInfos.getPickuptime());
         }
@@ -170,24 +170,25 @@ public class ExpressDetailActivity extends Activity {
         bn_delay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String server_url = getResources().getString(R.string.str_server_url)+"/update/express";
+                String server_url = getResources().getString(R.string.str_server_url) + "/update/delay";
                 try {
                     new MyHttpClient(server_url
                             , new JSONObject().put("Content-Type", "application/json;charset=utf-8")
                             , new JSONObject().put("barcode", expressInfos.getBarcode())
-                            .put("delay", "1")
                             , new MyHttpClient.ResponseListener() {
                         @Override
-                        public void onResponse(String body,JSONObject headers) {
+                        public void onResponse(String body, JSONObject headers) {
                             if (body == null) {
                                 Toast.makeText(ExpressDetailActivity.this, "发信息给服务器出了点问题！", Toast.LENGTH_LONG).show();
                             } else {
                                 try {
                                     JSONObject rsp = new JSONObject(body);
                                     Toast.makeText(ExpressDetailActivity.this, rsp.getString("msg"), Toast.LENGTH_LONG).show();
-                                    Message msg = handler.obtainMessage();
-                                    msg.what = WHAT_STATECHANED_DELAYED;
-                                    handler.sendMessage(msg);
+                                    if (rsp.getInt("code") == 1) {
+                                        Message msg = handler.obtainMessage();
+                                        msg.what = WHAT_STATECHANED_DELAYED;
+                                        handler.sendMessage(msg);
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     System.out.println("result:" + body);
@@ -215,24 +216,25 @@ public class ExpressDetailActivity extends Activity {
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String server_url = getResources().getString(R.string.str_server_url)+"/update/express";
+                        String server_url = getResources().getString(R.string.str_server_url) + "/update/refuse";
                         try {
                             new MyHttpClient(server_url
                                     , new JSONObject().put("Content-Type", "application/json;charset=utf-8")
                                     , new JSONObject().put("barcode", expressInfos.getBarcode())
-                                    .put("state", getResources().getString(R.string.str_state_refused))
                                     , new MyHttpClient.ResponseListener() {
                                 @Override
-                                public void onResponse(String body,JSONObject headers) {
+                                public void onResponse(String body, JSONObject headers) {
                                     if (body == null) {
                                         Toast.makeText(ExpressDetailActivity.this, "发信息给服务器出了点问题！", Toast.LENGTH_LONG).show();
                                     } else {
                                         try {
                                             JSONObject rsp = new JSONObject(body);
                                             Toast.makeText(ExpressDetailActivity.this, rsp.getString("msg"), Toast.LENGTH_LONG).show();
-                                            Message msg = handler.obtainMessage();
-                                            msg.what = WHAT_STATECHANED_REFUSED;
-                                            handler.sendMessage(msg);
+                                            if (rsp.getInt("code") == 1) {
+                                                Message msg = handler.obtainMessage();
+                                                msg.what = WHAT_STATECHANED_REFUSED;
+                                                handler.sendMessage(msg);
+                                            }
                                             try {
                                                 result_intent.putExtra("result", new JSONObject().put("ischanged", true)
                                                         .put("position", position)

@@ -2,6 +2,8 @@ package com.hefvcjm.expresshelper.activities.nav_activities;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,8 @@ import org.json.JSONObject;
 
 public class SecurityActivity extends Activity {
 
+    private static final int WHAT_MODIFY_OK = 1;//修改密码成功
+
     private TextView title;
     private LinearLayout ll_modify_pw;
     private LinearLayout ll_modify_pw_view;
@@ -30,6 +34,20 @@ public class SecurityActivity extends Activity {
 
     private String phone;
     private String url;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            int what = msg.what;
+            switch (what) {
+                case WHAT_MODIFY_OK:
+                    ll_modify_pw_view.setVisibility(View.GONE);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +81,7 @@ public class SecurityActivity extends Activity {
                     Toast.makeText(SecurityActivity.this, "密码长度小于6或者大于16", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (et_new_pw.getText().toString().equals(et_confirm_pw.getText().toString())) {
+                if (!et_new_pw.getText().toString().equals(et_confirm_pw.getText().toString())) {
                     Toast.makeText(SecurityActivity.this, "两次输入的新密码不一致", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -84,7 +102,9 @@ public class SecurityActivity extends Activity {
                                 JSONObject rsp = new JSONObject(body);
                                 if (rsp.getInt("code") == 1) {
                                     if (rsp.getInt("modify") == 1) {
-                                        ll_modify_pw_view.setVisibility(View.GONE);
+                                        Message msg = handler.obtainMessage();
+                                        msg.what = WHAT_MODIFY_OK;
+                                        handler.sendMessage(msg);
                                     }
                                 }
                                 Toast.makeText(SecurityActivity.this, rsp.getString("msg"), Toast.LENGTH_LONG).show();
