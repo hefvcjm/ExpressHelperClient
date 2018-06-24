@@ -139,7 +139,7 @@ public class ExpressDetailActivity extends Activity {
             tv_detail_state.setTextColor(getResources().getColor(R.color.state_refused));
             iv_state.setImageDrawable(getResources().getDrawable(R.drawable.refused));
         }
-        if (!expressInfos.getPickuptime().equals("null")) {
+        if (!expressInfos.getPickuptime().equals("null") && !expressInfos.getPickuptime().equals("")) {
             Log.d("test", "_" + expressInfos.getPickuptime() + "|");
             ll_detail_pickuptime.setVisibility(View.VISIBLE);
             tv_detail_pickuptime.setText(expressInfos.getPickuptime());

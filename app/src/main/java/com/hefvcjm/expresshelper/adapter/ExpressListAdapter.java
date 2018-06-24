@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import com.hefvcjm.expresshelper.R;
 import com.hefvcjm.expresshelper.express.ExpressInfos;
@@ -21,7 +23,7 @@ import com.hefvcjm.expresshelper.express.ExpressInfos;
  * Created by win10 on 2018/5/4.
  */
 
-public class ExpressListAdapter extends ArrayAdapter<ExpressInfos> {
+public class ExpressListAdapter extends ArrayAdapter<ExpressInfos>{
 
     private int resourceId;
     private Context context;

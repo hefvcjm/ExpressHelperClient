@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">物流助手</string>
+    <string name="app_name">快递助手</string>
 
     <!-- 物流领取状态 -->
     <string name="str_state_receiving">待取货</string>

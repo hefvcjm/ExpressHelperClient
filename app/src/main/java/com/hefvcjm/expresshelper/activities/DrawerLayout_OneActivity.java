@@ -1,9 +1,14 @@
 package com.hefvcjm.expresshelper.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -39,6 +44,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -83,6 +90,7 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         StaticInfos.setPhone(phone);
         UserInfos.getInstance().setPhone(phone);
         JPushInterface.setAlias(DrawerLayout_OneActivity.this, 0, phone);
+        registerMessageReceiver();
 //        Collections.sort(expressList);
         adapter = new ExpressListAdapter(DrawerLayout_OneActivity.this, R.layout.item_list_express, expressList);
         lv_express_list = (ListView) findViewById(R.id.lv_express_list);
@@ -243,6 +251,12 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         super.onStart();
     }
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -306,5 +320,32 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         }
         startActivity(new Intent(DrawerLayout_OneActivity.this, LoginActivity.class));
         finish();
+    }
+
+
+    public MessageReceiver mMessageReceiver;
+    public static String ACTION_INTENT_RECEIVER = "com.hefvcjm.expresshelper.NEW_EXPRESS_RECEIVER";
+
+    /**
+     * 动态注册广播
+     */
+    public void registerMessageReceiver() {
+        mMessageReceiver = new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+
+        filter.addAction(ACTION_INTENT_RECEIVER);
+        registerReceiver(mMessageReceiver, filter);
+    }
+
+    public class MessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            if (intent.getAction().equals(ACTION_INTENT_RECEIVER)) {
+                Log.d("test_update", intent.getStringExtra("message"));
+                synchronize_express(url, phone);
+            }
+        }
+
     }
 }

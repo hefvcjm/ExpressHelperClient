@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.Observable;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -53,14 +54,16 @@ public class MyReceiver extends BroadcastReceiver {
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知");
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
 //                receivingNotification(context, bundle);
-
+                Intent mIntent = new Intent(DrawerLayout_OneActivity.ACTION_INTENT_RECEIVER);
+                mIntent.putExtra("message", getDetailJson(bundle).toString());
+                context.sendBroadcast(mIntent);
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
                 Intent i = new Intent(context, ExpressDetailActivity.class);
                 ExpressInfos expressInfos = getDetailJson(bundle);
-                if (expressInfos!=null){
+                if (expressInfos != null) {
                     i.putExtra("express_detail", expressInfos.toString());
                     i.putExtra("position", 0);
                     Log.d(TAG, expressInfos.toString());

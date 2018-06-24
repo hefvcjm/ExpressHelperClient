@@ -42,7 +42,7 @@ public class ExpressInfos implements Comparable<ExpressInfos>{
     private String code = "";//取货码
     private String deadline = "";//截止时间
     private String arrivetime = "";//到货时间
-    private String pickuptime = "";//取货时间
+    private String pickuptime = "null";//取货时间
     private String state = "";//状态
     private String delay = "0";//是否延期过
 
