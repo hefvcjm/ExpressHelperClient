@@ -75,7 +75,6 @@ public class WelcomeActivity extends Activity {
 //                }
                 if (token != null) {
                     server_url = getResources().getString(R.string.str_server_url) + "/login/token";
-                    ;
                     try {
                         new MyHttpClient(server_url
                                 , new JSONObject().put("Content-Type", "application/json;charset=utf-8")

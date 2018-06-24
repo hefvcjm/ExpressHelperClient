@@ -161,10 +161,10 @@ public class LoginActivity extends Activity {
                                         Message msg = handler.obtainMessage();
                                         msg.what = WHAT_LOGIN;
                                         handler.sendMessage(msg);
-                                    }
-                                    String token = rsp.getString("token");
-                                    if (token != null) {
-                                        Storage.getInstance(LoginActivity.this).saveToken(token);
+                                        String token = rsp.getString("token");
+                                        if (token != null) {
+                                            Storage.getInstance(LoginActivity.this).saveToken(token);
+                                        }
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

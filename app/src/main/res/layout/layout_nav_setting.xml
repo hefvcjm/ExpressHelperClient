@@ -87,6 +87,7 @@
                 android:src="@drawable/line" />
 
             <RelativeLayout
+                android:id="@+id/nav_setting_rl_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"

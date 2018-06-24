@@ -11,12 +11,12 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/nav_security_modify_pw"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="10dp"
             android:paddingTop="10dp">
-
 
 
             <ImageView
@@ -48,7 +48,7 @@
                     android:layout_marginRight="18dp"
                     android:text="已是最新版本"
                     android:textSize="16sp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <ImageView
@@ -56,11 +56,116 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/line" />
 
+            <LinearLayout
+                android:id="@+id/nav_security_modify_pw_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="旧密码:"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/nav_security_old_pw"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_weight="3"
+                        android:inputType="textPassword"
+                        android:maxLength="16" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="新密码:"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/nav_security_new_pw"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_weight="3"
+                        android:inputType="textPassword"
+                        android:maxLength="16" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="确认密码:"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/nav_security_confirm_pw"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_weight="3"
+                        android:inputType="textPassword"
+                        android:maxLength="16" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/nav_security_ok_modify_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.7"
+                    android:background="@drawable/selector_login"
+                    android:minHeight="0dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="确认"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,7 +192,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/line" />
-
 
 
         </LinearLayout>

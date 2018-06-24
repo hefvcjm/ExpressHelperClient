@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -58,7 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,7 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -143,6 +146,37 @@
                     android:textSize="18sp" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:text="姓名"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/nav_me_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:maxLength="8"
+                    android:maxLines="1"
+                    android:text="黄恩芳"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,13 +197,18 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
-                <TextView
+                <EditText
                     android:id="@+id/nav_me_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="18dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:maxLength="16"
+                    android:maxLines="1"
                     android:text="123@xjtu.email.com"
                     android:textSize="18sp" />
             </RelativeLayout>
@@ -194,13 +233,18 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
-                <TextView
+                <EditText
                     android:id="@+id/nav_me_sex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="18dp"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:maxLength="1"
+                    android:maxLines="1"
                     android:text="男"
                     android:textSize="18sp" />
             </RelativeLayout>
@@ -225,14 +269,19 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
-                <TextView
+                <EditText
                     android:id="@+id/nav_me_birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="18dp"
-                    android:text="1997-9-10"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:text="1997-09-10"
                     android:textSize="18sp" />
             </RelativeLayout>
 
@@ -258,11 +307,15 @@
 
             </RelativeLayout>
 
-            <TextView
+            <EditText
                 android:id="@+id/nav_me_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@null"
+                android:clickable="false"
+                android:focusable="false"
                 android:lineSpacingExtra="5dp"
+                android:maxLength="50"
                 android:paddingBottom="10dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="18dp"

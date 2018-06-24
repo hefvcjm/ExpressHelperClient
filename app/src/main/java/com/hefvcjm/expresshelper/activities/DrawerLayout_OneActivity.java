@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.hefvcjm.expresshelper.R;
 import com.hefvcjm.expresshelper.activities.nav_activities.AboutActivity;
@@ -24,9 +25,11 @@ import com.hefvcjm.expresshelper.activities.nav_activities.SettingActivity;
 import com.hefvcjm.expresshelper.adapter.ExpressListAdapter;
 import com.hefvcjm.expresshelper.express.ExpressInfos;
 import com.hefvcjm.expresshelper.net.MyHttpClient;
+import com.hefvcjm.expresshelper.staticinfos.StaticInfos;
 import com.hefvcjm.expresshelper.storage.Storage;
 import com.hefvcjm.expresshelper.user.UserInfos;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +38,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -74,6 +78,7 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
         url = getResources().getString(R.string.str_server_url) + "/query/expresses";
         Intent intent = getIntent();
         phone = intent.getStringExtra("phone");
+        StaticInfos.setPhone(phone);
         UserInfos.getInstance().setPhone(phone);
 //        Collections.sort(expressList);
         adapter = new ExpressListAdapter(DrawerLayout_OneActivity.this, R.layout.item_list_express, expressList);
@@ -171,10 +176,10 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                                 JSONObject js = new JSONObject(result);
                                 int n = new Integer(js.getString("total"));
                                 Log.d("test", n + "");
-                                List<String> datas = null;
+                                JSONArray datas = null;
                                 if (!js.getString("data").equals("null")) {
                                     String str = js.getString("data");
-                                    datas = (List<String>) js.getJSONArray("data");
+                                    datas = js.getJSONArray("data");
 //                                    str = str.substring(1, str.length() - 1);
 //                                    Log.d("datas", "--:" + str);
 //                                    datas = new ArrayList<String>(Arrays.asList(str.split(",")));
@@ -185,14 +190,15 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
                                     barcodes.add(e.getBarcode());
                                 }
                                 if (datas != null) {
-                                    for (String str : datas) {
-                                        Log.d("datas", "str=" + str);
-                                        JSONObject sub = new JSONObject(str);
+                                    int length = datas.length();
+                                    for (int i = 0; i < length; i++) {
+//                                        Log.d("datas", "str=" + str);
+                                        JSONObject sub = new JSONObject(datas.getString(i));
                                         Log.d("datas", sub.toString());
                                         //barcode,company,location,code,deadline,state
-                                        if (!barcodes.contains(sub.getString("barcode"))) {
-                                            temp.add(new ExpressInfos(sub.toString()));
-                                        }
+//                                        if (!barcodes.contains(sub.getString("barcode"))) {
+                                        temp.add(new ExpressInfos(sub.toString()));
+//                                        }
                                     }
                                 }
                             } catch (JSONException e) {
@@ -281,6 +287,20 @@ public class DrawerLayout_OneActivity extends AppCompatActivity implements Navig
 
     private void logout() {
         Storage.getInstance(DrawerLayout_OneActivity.this).clearTokenCache();
+        String url_logout = getResources().getString(R.string.str_server_url) + "/logout";
+        try {
+            new MyHttpClient(url_logout
+                    , new JSONObject().put("Content-Type", "application/json;charset=utf-8")
+                    , new JSONObject().put("phone", phone)
+                    , new MyHttpClient.ResponseListener() {
+                @Override
+                public void onResponse(String body, JSONObject headers) {
+
+                }
+            }).post();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         startActivity(new Intent(DrawerLayout_OneActivity.this, LoginActivity.class));
         finish();
     }
